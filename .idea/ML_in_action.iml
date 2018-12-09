@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="PYTHON_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/3_TREE" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/5_Logistic Regression" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/2_KNN" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/regression_8_9/9_CART_Regression" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/tools_13_15/13_PCA" isTestSource="false" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+  <component name="TestRunnerService">
+    <option name="projectConfiguration" value="py.test" />
+    <option name="PROJECT_TEST_RUNNER" value="py.test" />
+  </component>
+</module>

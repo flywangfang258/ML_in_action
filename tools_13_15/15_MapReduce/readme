@@ -1,0 +1,30 @@
+Hadoop是MapReduce框架的一个免费开源实现，
+
+MapReduce： 分布式计算框架
+优点：可以在短时间内完成大量工作
+缺点：算法必须经过重写，需要对系统工程有一定的理解
+适用数据类型：数值型和标称型数据
+
+MapReduce是一个软件框架，可以将单个作业分配给多台计算机执行。Simplified Data Processing on Large Clusters.
+
+MapReduce 在大量节点组成的集群上运行，工作流程是：单个作业被分成很多小份，输入数据也被切片分发到每个节点，各个节点只在本地数据上做运算，
+对应的运算代码称为mapper，这个过程称为map阶段。每个mapper的输出通过某种方式组合（一般还会排序）。
+排序后的结果再被分成小份分发到各个节点进行下一步的处理工作。第二步的处理阶段被称为reduce阶段，对应的运行代码称为reducer。
+reducer的输出就是程序的最终执行结果。
+
+
+在任何时候，每个mapper或reducer之间都不进行通信。每个节点只处理自己的事务，且在本地分配的数据集上运算。
+
+
+主节点控制MapReduce的作业流程
+MapReduce的作业可以分成map任务和reduce任务
+map任务之间不做数据交流，reduce任务也一样
+在map和reduce阶段中间，有一个sort或combine阶段
+数据被重复放在不同机器上，以防某个机器失效
+mapper和reducer传输的数据形式是key/value对
+
+Apache的Hadoop项目是MapReduce框架的一个实现。
+
+Hadoop流像linux系统中的管道（管道符号使用|，可以将一个命令的输出作为另一个命令的输入），如果用mapper.py调用mapper，用reducer.py调用reducer，
+那么hadoop流就可以像linux命令一样执行，例如：
+cat inputFile.txt | python mapper.py | sort | python reducer.py > outputFile.txt
