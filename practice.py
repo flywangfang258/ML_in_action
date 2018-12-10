@@ -13,6 +13,7 @@ print(mm*2)   # [2 2 2]
 # 多维数组中的元素可以像列表中一样访问，也可以用矩阵方式访问
 jj = array([[1, 2, 3], [1, 1, 1]])
 print(jj[0][2], jj[0, 2])  # 3 3
+print((mm == pp).all())  # False
 
 # 矩阵
 from numpy import mat, matrix
@@ -47,3 +48,19 @@ print(mm.mean())   # 4.0
 
 print(jj[1, :])  # [1 1 1]
 print(jj[0, 0:2])
+
+
+print('*************')
+import numpy as np
+a = np.arange(12).reshape(2, 3, 2)
+b = np.arange(12, 24).reshape(2, 2, 3)
+c = np.dot(a, b)
+print(a)
+print(b)
+print(c.shape, c)
+
+print(np.alltrue(c[0, :, 0, :] == np.dot(a[0], b[0])))
+
+print(range(4), type(range(4)))   # range(0, 4) <class 'range'>
+print(list(range(4)))  # [0, 1, 2, 3]
+print(np.arange(4), type(np.arange(4)))   # [0 1 2 3] <class 'numpy.ndarray'>
