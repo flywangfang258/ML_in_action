@@ -170,24 +170,27 @@ def grabTree(filename):
     fr = open(filename, 'rb')
     return pickle.load(fr)
 
+
 if __name__ == "__main__":
-    # myDat, labels = createDataset()
-    # label1 = labels[:]
-    # # print(calcShannonEnt(myDat))
-    # # print(chooseBestFeatureToSplit(myDat))
-    # myTree = createTree(myDat, labels)
-    # print(myTree)
-    # print(classify(myTree, label1, [0, 0]))
-    # print(classify(myTree, label1, [1, 1]))
-    myDat = []
-    labels = []
-    fr = open('lenses.txt')
-    for line in fr:
-        line = line.strip().split('\t')
-        myDat.append(line)
-        labels.append(line[-1])
-    lensesTree = createTree(myDat, labels)
-    print(lensesTree)
-    storeTree(lensesTree, 'classifierStorage.pkl')
-    print(grabTree('classifierStorage.pkl'))
+    myDat, labels = createDataset()
+    label1 = labels[:]
+    # print(calcShannonEnt(myDat))
+    # print(chooseBestFeatureToSplit(myDat))
+    myTree = createTree(myDat, labels)
+    print(myTree)
+    print(classify(myTree, label1, [0, 0]))
+    print(classify(myTree, label1, [1, 1]))
+
+    # myDat = []
+    # labels = []
+    # fr = open('lenses.txt')
+    # for line in fr:
+    #     line = line.strip().split('\t')
+    #     myDat.append(line)
+    #     labels.append(line[-1])
+    # lensesTree = createTree(myDat, labels)
+    # print(lensesTree)
+    # storeTree(lensesTree, 'classifierStorage.pkl')
+    # print(grabTree('classifierStorage.pkl'))
+
     # treePlotter.createPlot(lensesTree)

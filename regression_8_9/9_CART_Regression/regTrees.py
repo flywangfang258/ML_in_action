@@ -103,6 +103,14 @@ def chooseBestSplit(dataSet, leafType=regLeaf, errType=regErr, ops=(1,4)):
 
 
 def createTree(dataSet, leafType=regLeaf, errType=regErr, ops=(1, 4)):
+    '''
+    递归函数：树构建
+    :param dataSet:数据集
+    :param leafType:建立叶节点函数
+    :param errType: 误差计算函数
+    :param ops: 包含树构建所需的其他函数的元组（tolS，tolN）， tolS：容许的误差下降值，tolN：切分的最少样本数
+    :return:
+    '''
     feat, val = chooseBestSplit(dataSet, leafType, errType, ops)
     # 满足停止条件时返回叶节点值
     if feat == None:
@@ -160,7 +168,7 @@ def prune(tree, testData):
         treeMean = (tree['left']+tree['right'])/2.0
         errorMerge = sum(power(testData[:, -1]-treeMean, 2))
         if errorMerge < errorNoMerge:
-            # print('merging!')
+            print('merging!')
             return treeMean
         else:
             return tree
@@ -289,17 +297,17 @@ if __name__ == '__main__':
     # print('retTree_1  ', retTree_1)
 
     # # 停止条件tols对误差的数量级非常敏感
-    # myDat2 = loadDataSet('ex2.txt')
-    # myMat2 = mat(myDat2)
-    # retTree2 = createTree(myMat2, ops=(0, 1))
+    myDat2 = loadDataSet('ex2.txt')
+    myMat2 = mat(myDat2)
+    retTree2 = createTree(myMat2, ops=(0, 1))
 
     # print('retTree2  ', retTree2)
     # print('retTree2_1  ', createTree(myMat2, ops=(10000, 4)))
 
-    # # 后剪枝：利用测试集来对树进行剪枝，由于不需要用户指定参数，是一种更理想化的剪枝方法。
-    # myDatTest = loadDataSet('ex2test.txt')
-    # myMat2Test = mat(myDatTest)
-    # print('后剪枝：', prune(retTree2, myMat2Test))
+    # 后剪枝：利用测试集来对树进行剪枝，由于不需要用户指定参数，是一种更理想化的剪枝方法。
+    myDatTest = loadDataSet('ex2test.txt')
+    myMat2Test = mat(myDatTest)
+    print('后剪枝：', prune(retTree2, myMat2Test))
 
     # # 模型树测试
     # myDat = loadDataSet('exp2.txt')
@@ -308,25 +316,25 @@ if __name__ == '__main__':
     # retTree = createTree(myMat, modelLeaf, modelErr, (1, 10))
     # print('retTree  ', retTree)
 
-    # 模型树与回归树预测比较
-    trainMat = mat(loadDataSet('bikeSpeedVsIq_train.txt'))
-    testMat = mat(loadDataSet('bikeSpeedVsIq_test.txt'))
-    # # 回归树
-    # myTree = createTree(trainMat, ops=(1, 20))
-    # yHat = createForeCast(myTree, testMat[:, 0])
-    # corr = corrcoef(yHat, testMat[:, 1], rowvar=0)[0, 1]
-    # # R^2是指相关系数， 越接近1.0越好
-    # print('R^2:', corr)
-    # 模型树
-    myTreeM = createTree(trainMat, modelLeaf, modelErr, ops=(1, 20))
-    yHat = createForeCast(myTreeM, testMat[:, 0], modelTreeEval)
-    corrM = corrcoef(yHat, testMat[:, 1], rowvar=0)[0, 1]
-    print('R^2_M:', corrM)
-    # # 标准的线性回归
-    # ws, X, Y = linearSolve(trainMat)
-    # print('ws:', ws)
-    # yHat = mat(zeros((shape(testMat)[0], 1)))
-    # for i in range(shape(testMat)[0]):
-    #     yHat[i] = testMat[i, 0] * ws[1, 0] + ws[0, 0]
-    # corrL = corrcoef(yHat, testMat[:, 1], rowvar=0)[0, 1]
-    # print('R^2_L:', corrL)
+    # # 模型树与回归树预测比较
+    # trainMat = mat(loadDataSet('bikeSpeedVsIq_train.txt'))
+    # testMat = mat(loadDataSet('bikeSpeedVsIq_test.txt'))
+    # # # 回归树
+    # # myTree = createTree(trainMat, ops=(1, 20))
+    # # yHat = createForeCast(myTree, testMat[:, 0])
+    # # corr = corrcoef(yHat, testMat[:, 1], rowvar=0)[0, 1]
+    # # # R^2是指相关系数， 越接近1.0越好
+    # # print('R^2:', corr)
+    # # 模型树
+    # myTreeM = createTree(trainMat, modelLeaf, modelErr, ops=(1, 20))
+    # yHat = createForeCast(myTreeM, testMat[:, 0], modelTreeEval)
+    # corrM = corrcoef(yHat, testMat[:, 1], rowvar=0)[0, 1]
+    # print('R^2_M:', corrM)
+    # # # 标准的线性回归
+    # # ws, X, Y = linearSolve(trainMat)
+    # # print('ws:', ws)
+    # # yHat = mat(zeros((shape(testMat)[0], 1)))
+    # # for i in range(shape(testMat)[0]):
+    # #     yHat[i] = testMat[i, 0] * ws[1, 0] + ws[0, 0]
+    # # corrL = corrcoef(yHat, testMat[:, 1], rowvar=0)[0, 1]
+    # # print('R^2_L:', corrL)

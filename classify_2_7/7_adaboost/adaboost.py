@@ -109,6 +109,13 @@ def buildStump(dataArr, classLabels, D):
 
 
 def adaBoostTrainDS(dataArr, classLabels, numIt = 40):
+    '''
+
+    :param dataArr:数据集（不包含label）
+    :param classLabels: 类别标签
+    :param numIt: 迭代次数
+    :return:
+    '''
     weakClassArr = []
     m = np.shape(dataArr)[0]
     D = np.mat(np.ones((m, 1))/m)

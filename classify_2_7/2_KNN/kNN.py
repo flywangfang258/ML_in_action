@@ -36,9 +36,9 @@ def classify0(dataset, labels, inX, k):
     '''
     datasetSize = dataset.shape[0]
     # 距离计算
-    diffMat = np.tile(inX, (datasetSize, 1))-dataset
+    diffMat = np.tile(inX, (datasetSize, 1)) - dataset  # np.tile(inX, (datasetSize, 1)) 表示inX在行上重复datasetSize次，列上重复1次。
     sqDiffMat = diffMat**2
-    sqDistances = sqDiffMat.sum(axis=1)  # axis = 1每一行相加，axis = 0每一列相加
+    sqDistances = sqDiffMat.sum(axis=1)  # axis = 1 每一行相加，axis = 0每一列相加
     distances = sqDistances**0.5
     sortedDistances = distances.argsort()  # 将元素从小到大排列，并输出下标的index
 
@@ -79,7 +79,7 @@ def autoNorm(dataSet):
     :return: 归一化的训练矩阵
     '''
     m = dataSet.shape[0]
-    minvals = dataSet.min(0)
+    minvals = dataSet.min(0)  # 从列中选取最小值
     max = dataSet.max(0)
     norm_datavec = np.zeros(dataSet.shape)
     ranges = max - minvals
@@ -89,21 +89,22 @@ def autoNorm(dataSet):
 
 
 def datingClassTest():
-    hoRatio = 0.50  # hold out 10%
+    '''
+    对约会网站进行测试
+    :return:
+    '''
+    hoRatio = 0.10  # hold out 10%
     datingDataMat, datingLabels = file2matrix('datingTestSet2.txt')  # load data setfrom file
     normMat, ranges, minVals = autoNorm(datingDataMat)
     m = normMat.shape[0]
     numTestVecs = int(m * hoRatio)
     errorCount = 0.0
     for i in range(numTestVecs):
-        classifierResult = classify0(normMat[i, :], normMat[numTestVecs:m, :], datingLabels[numTestVecs:m], 3)
-        print
-        "the classifier came back with: %d, the real answer is: %d" % (classifierResult, datingLabels[i])
+        classifierResult = classify0( normMat[numTestVecs:m, :], datingLabels[numTestVecs:m], normMat[i, :], 3)
+        print("the classifier came back with: %d, the real answer is: %d" % (classifierResult, datingLabels[i]))
         if (classifierResult != datingLabels[i]): errorCount += 1.0
-    print
-    "the total error rate is: %f" % (errorCount / float(numTestVecs))
-    print
-    errorCount
+    print("the total error rate is: %f" % (errorCount / float(numTestVecs)))
+    print(errorCount)
 
 
 def img2vector(filename):
@@ -139,10 +140,8 @@ def handwritingClassTest():
         print
         "the classifier came back with: %d, the real answer is: %d" % (classifierResult, classNumStr)
         if (classifierResult != classNumStr): errorCount += 1.0
-    print
-    "\nthe total number of errors is: %d" % errorCount
-    print
-    "\nthe total error rate is: %f" % (errorCount / float(mTest))
+    print("\nthe total number of errors is: %d" % errorCount)
+    print("\nthe total error rate is: %f" % (errorCount / float(mTest)))
 
 
 if __name__ == '__main__':
@@ -153,6 +152,8 @@ if __name__ == '__main__':
     # group, labels = createDataSet()
     # print(classify0(group, labels, [0.1, 0], 3))
 
-    datingDateMat, datlingLabels = file2matrix('datingTestSet2.txt')
-    norm_datingDataMat, ranges, minvals = autoNorm(datingDateMat)
-    print(norm_datingDataMat[:10], ranges, minvals)
+    # datingDateMat, datlingLabels = file2matrix('datingTestSet2.txt')
+    # norm_datingDataMat, ranges, minvals = autoNorm(datingDateMat)
+    # print(norm_datingDataMat[:10], ranges, minvals)
+
+    datingClassTest()
