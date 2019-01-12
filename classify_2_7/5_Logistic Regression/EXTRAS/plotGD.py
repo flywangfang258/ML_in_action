@@ -1,7 +1,5 @@
 '''
-Created on Oct 28, 2010
-
-@author: Peter
+@author: wf
 '''
 import matplotlib
 import numpy as np

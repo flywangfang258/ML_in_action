@@ -1,10 +1,8 @@
 '''
-Created on Oct 6, 2010
 Shows montonocity of a function and the log of that function
-@author: Peter
+@author: wf
 '''
 from numpy import *
-import matplotlib
 import matplotlib.pyplot as plt
 
 t = arange(0.0, 0.5, 0.01)

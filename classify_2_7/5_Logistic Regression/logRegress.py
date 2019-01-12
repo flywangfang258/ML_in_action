@@ -24,8 +24,8 @@ def sigmoid(inX):
 def gradAscent(dataMatIn, classLabel):
     '''
     批量梯度上升
-    :param dataMatIn:数据集不带标签
-    :param classLabel: 标签
+    :param dataMatIn:数据集不带标签，2维的numpy数组，每列分别代表不同的特征，我们加上0维特征，有100*3的矩阵
+    :param classLabel: 类别标签 1*100
     :return: 回归系数
     '''
     dataMatrix = np.mat(dataMatIn)

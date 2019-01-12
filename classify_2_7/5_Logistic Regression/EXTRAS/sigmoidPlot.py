@@ -1,7 +1,5 @@
 '''
-Created on Oct 6, 2010
-
-@author: Peter
+@author: wf
 '''
 import sys
 from pylab import *

@@ -28,8 +28,14 @@ def createVocabList(dataSet):
         vocabList = vocabList | set(document)
     return list(vocabList)
 
-# 贝努力模型(词集模型）set-of-words
+# 贝努力模型(词集模型）set-of-words 不考虑词在文档中出现的次数，只考虑出不出现，相当于假设词是等权重的
 def setOfWords2Vec(vocabList, document):
+    '''
+    若某个词出现在词汇表中，则将句向量的对应位置置为1
+    :param vocabList:词汇表 
+    :param inputSet: 某个进行切分词条后的文档
+    :return: 
+    '''
     returnVec = [0] * len(vocabList)
     # print(returnVec, type(returnVec))
     for word in document:
@@ -50,6 +56,12 @@ def bagOfWords2VecMN(vocabList, document):
 
 # 从词向量计算概率
 def trainNB0(trainMatrix, trainCategory):
+    '''
+    计算概率 P(ci|w) = [P(w|ci)P(ci)] / P(w)
+    :param trainMatrix: 
+    :param trainCategory: 
+    :return: 
+    '''
     numTrainDocs = len(trainMatrix)
     numWords = len(trainMatrix[0])
     pAbusive = float(sum(trainCategory)) / numTrainDocs
@@ -79,6 +91,7 @@ def classifyNB(vec2Classify, p0Vect, p1Vect, pAbusive):
         return 1
     else:
         return 0
+
 
 def testingNB():
     dataSet, classLabel = loadDataSet()
@@ -165,13 +178,13 @@ def calcMostFreq(vocabList, fullText):
     # print(type(sortedFreqDict), sortedFreqDict[:10])
     return sortedFreqDict[:3]
 
+
 def stopWords():
     import re
     wordList = open('stopWords.txt').read() # see http://www.ranks.nl/stopwords
     listOfTokens = re.split(r'\W+', wordList)
     print('read stop word from \'stopWord.txt\':', listOfTokens)
     return [tok.lower() for tok in listOfTokens]
-
 
 
 def localWords(feed1, feed0):
@@ -189,7 +202,7 @@ def localWords(feed1, feed0):
         docList.append([word.lower() for word in wordList])
         # print(docList)
         fullText.append([word.lower() for word in wordList])
-        classList.append(1)
+        classList.append(1)   
         wordList = textParse(feed0['entries'][i]['summary'])
         docList.append([word.lower() for word in wordList])
         fullText.append([word.lower() for word in wordList])
@@ -243,9 +256,10 @@ def testRSS():
     sf = feedparser.parse('https://fedoramagazine.org/feed/')
     vocabList,pSF,pNY = localWords(ny, sf)
 
+
 def getTopWords(ny,sf):
     import operator
-    vocabList,p0V,p1V=localWords(ny,sf)
+    vocabList,p0V,p1V=localWords(ny, sf)
     topNY=[]; topSF=[]
     for i in range(len(p0V)):
         if p0V[i] > -4.0 : topSF.append((vocabList[i],p0V[i]))
@@ -275,50 +289,16 @@ if __name__ == "__main__":
 
     # testingNB()
 
- #    arr = np.array([-3.04452244 -3.04452244 -3.04452244 -3.04452244 -2.35137526 -2.35137526
- # -3.04452244 -3.04452244 -3.04452244 -3.04452244 -1.65822808 -1.94591015
- # -3.04452244 -2.35137526 -2.35137526 -2.35137526 -2.35137526 -1.94591015
- # -3.04452244 -2.35137526 -2.35137526 -2.35137526 -3.04452244 -2.35137526
- # -2.35137526 -3.04452244 -3.04452244 -3.04452244 -3.04452244 -3.04452244
- # -3.04452244 -2.35137526])
- #    list1 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
- #    print(type(arr * list1))
-
-    # mySent = 'This book is the best book on Python or M.L. I have ever laid eyes upon.'
-    # # mySent = mySent.split()
-    # # print(mySent)
-    # import re
-    # regEx = re.compile('\\W+')
-    # listOfTokens = regEx.split(mySent)
-    # # print(listOfTokens)
-    # listOfTokens = [tok.lower() for tok in listOfTokens if len(tok) > 0]
-    #
-    # print(listOfTokens)
-    #
-    # emailText = open('email/ham/6.txt').read()
-    # listOfTokens = regEx.split(emailText)
-    # print(listOfTokens)
-
     # spamTest()
 
-    # import feedparser
-    # ny = feedparser.parse('http://newyork.craigslist.org/stp/index.rss')
-    # print(ny)
-    # print(ny['entries'])
-
-    # top30Words = [('N', 0), ('b', 0), ('x', 0), ('g', 0), ('a', 0), ('E', 0), ('j', 0), ('c', 0), ('C', 0), ('h', 0)]
-    # vocabList = ['N', 'b', 'z']
-    # for pairW in top30Words:
-    #     if pairW[0] in vocabList:
-    #         print(pairW[0])
-    #         vocabList.remove(pairW[0])
-    # print(vocabList)
-
-    # voc = ['This', 'artist', 'conception', 'the', 'core', 'Cygnus', 'shows', 'the', 'dusty', 'donut', 'shaped', 'surroundings', 'called', 'torus', 'and', 'jets', 'launching', 'from', 'its', 'center', 'Welcome', 'back', 'this', 'series', 'building', 'faster', 'web', 'pages', 'The', 'last', 'article', 'talked', 'about', 'what', 'you', 'can', 'achieve', 'just', 'through', 'image', 'compression', 'The', 'example', 'started', 'with', '2MB', 'browser', 'fat', 'and', 'reduced', 'down', 'weight', '488', '9KB', 'That', '8217', 'still', 'not', 'fast', 'enough', 'This', 'article', 'continues', 'the', 'browser', 'diet', 'lose', 'more', 'fat', 'You', 'might', '8230', 'Viewed', 'from', 'window', 'inside', 'the', 'cupola', 'the', 'International', 'Space', 'Station', 'window', 'the', 'world', 'the', 'Japanese', 'Exploration', 'Agency', 'Transfer', 'Vehicle', 'Linux', 'containers', 'are', 'processes', 'with', 'certain', 'isolation', 'features', 'provided', 'Linux', 'kernel', 'including', 'filesystem', 'process', 'and', 'network', 'isolation', 'Containers', 'help', 'with', 'portability', 'applications', 'can', 'distributed', 'container', 'images', 'along', 'with', 'their', 'dependencies', 'and', 'run', 'virtually', 'any', 'Linux', 'system', 'with', 'container', 'runtime', 'Although', 'container', 'technologies', 'exist', 'for', 'very', 'long', 'time', '8230', 'During', 'National', 'Hispanic', 'Heritage', 'Month', 'celebrating', 'the', 'achievements', 'astronaut', 'Ellen', 'Ochoa', 'and', 'other', 'Hispanic', 'astronauts', 'and', 'professionals', 'NASA', 'Floating', 'upside', 'down', 'and', 'reading', 'checklist', 'may', 'not', 'how', 'most', 'perform', 'the', 'day', 'work', 'but', 'was', 'for', 'Ochoa', 'Space', 'Shuttle', 'Discovery', 'STS', 'mission', 'Fedora', 'delightful', 'use', 'graphical', 'operating', 'system', 'You', 'can', 'point', 'and', 'click', 'your', 'way', 'through', 'just', 'about', 'any', 'task', 'easily', 'But', 'you', '8217', 'probably', 'seen', 'there', 'powerful', 'command', 'line', 'under', 'the', 'hood', 'try', 'out', 'shell', 'just', 'open', 'the', 'Terminal', 'application', 'your', 'Fedora', 'system', 'This', 'article', '8230', 'This', 'view', 'southern', 'California', 'was', 'taken', 'the', 'Apollo', 'crew', 'during', 'their', '18th', 'revolution', 'the', 'Earth', 'Oct', '1968', 'Lots', 'web', 'developers', 'want', 'achieve', 'fast', 'loading', 'web', 'pages', 'more', 'page', 'views', 'come', 'from', 'mobile', 'devices', 'making', 'websites', 'look', 'better', 'smaller', 'screens', 'using', 'responsive', 'design', 'just', 'one', 'side', 'the', 'coin', 'Browser', 'Calories', 'can', 'make', 'the', 'difference', 'loading', 'times', 'which', 'satisfies', 'not', 'just', 'the', 'user', 'but', 'search', 'engines', 'that', '8230', 'Cosmonaut', 'Alexey', 'Ovchinin', 'Roscosmos', 'left', 'and', 'astronaut', 'Nick', 'Hague', 'NASA', 'right', 'embrace', 'their', 'families', 'after', 'landing', 'the', 'Krayniy', 'Airport', 'Some', 'weeks', 'ago', 'Steam', 'announced', 'new', 'addition', 'Steam', 'Play', 'with', 'Linux', 'support', 'for', 'Windows', 'games', 'using', 'Proton', 'fork', 'from', 'WINE', 'This', 'capability', 'still', 'beta', 'and', 'not', 'all', 'games', 'work', 'Here', 'are', 'some', 'more', 'details', 'about', 'Steam', 'and', 'Proton', 'According', 'the', 'Steam', 'website', 'there', 'are', 'new', 'features', 'the', 'beta', 'release', '8230', 'This', 'composite', 'image', 'shows', 'the', 'International', 'Space', 'Station', 'with', 'crew', 'three', 'onboard', 'silhouette', 'transits', 'the', 'Sun', 'roughly', 'five', 'miles', 'per', 'second', 'Sunday', 'Oct', '2018', 'Fedora', 'Classroom', 'sessions', 'continue', 'next', 'week', 'with', 'session', 'Fedora', 'Modularity', 'The', 'general', 'schedule', 'for', 'sessions', 'appears', 'the', 'wiki', 'You', 'can', 'also', 'find', 'resources', 'and', 'recordings', 'from', 'previous', 'sessions', 'there', 'Here', 'are', 'details', 'about', 'this', 'week', 'session', 'Tuesday', 'October', '1400', 'UTC', 'That', 'link', 'allows', 'you', 'convert', 'the', 'time', 'your', 'timezone', 'Topic', 'Fedora', '8230', 'The', 'Soyuz', 'rocket', 'rolled', 'out', 'train', 'the', 'launch', 'pad', 'Tuesday', 'Oct', '2018', 'for', 'the', 'Expedition', 'launch', 'Last', 'month', 'the', 'GNOME', 'project', 'announced', 'the', 'release', 'GNOME', 'The', 'good', 'news', 'that', 'this', 'new', 'version', 'GNOME', 'default', 'the', 'forthcoming', 'release', 'Fedora', 'Workstation', 'GNOME', 'includes', 'range', 'new', 'features', 'and', 'enhancements', 'including', 'improvements', 'Files', 'nautilus', 'and', 'the', 'new', 'Podcasts', 'application', 'The', 'great', 'news', '8230', 'During', 'National', 'Hispanic', 'Heritage', 'Month', 'celebrating', 'the', 'contributions', 'the', 'brilliant', 'Hispanic', 'women', 'and', 'men', 'NASA', 'this', 'image', 'astronaut', 'Joe', 'Acaba', 'installs', 'botany', 'gear', 'for', 'the', 'International', 'Space', 'Station', 'Veggie', 'facility', 'demonstrate', 'plant', 'growth', 'space', 'Swift', 'general', 'purpose', 'programming', 'language', 'built', 'using', 'modern', 'approach', 'safety', 'performance', 'and', 'software', 'design', 'patterns', 'aims', 'the', 'best', 'language', 'for', 'variety', 'programming', 'projects', 'ranging', 'from', 'systems', 'programming', 'desktop', 'applications', 'and', 'scaling', 'cloud', 'services', 'Read', 'more', 'about', 'and', 'how', 'try', 'out', '8230', 'The', 'landing', 'jets', 'fire', 'the', 'Soyuz', 'spacecraft', 'lands', 'with', 'Drew', 'Feustel', 'Ricky', 'Arnold', 'and', 'Oleg', 'Artemyev', 'members', 'the', 'Expedition', 'and', 'crews', 'onboard', 'the', 'International', 'Space', 'Station', 'You', 'may', 'have', 'already', 'seen', 'the', 'article', 'here', 'the', 'Magazine', 'about', 'upscaling', 'bitmap', 'images', 'with', 'better', 'quality', 'That', 'article', 'covered', 'few', 'utilities', 'achieve', 'good', 'results', 'but', 'there', '8217', 'always', 'room', 'for', 'enhancement', 'Meet', 'Waifu2x', 'sophisticated', 'tool', 'that', 'uses', 'deep', 'convolutional', 'neural', 'networks', 'machine', 'learning', 'for', 'short', 'Therefore', 'benefits', 'from', 'trained', '8230', 'International', 'Space', 'Station', 'Commander', 'Alexander', 'Gerst', 'has', 'better', 'view', 'our', 'home', 'planet', 'than', 'most', 'The', 'Linux', 'desktop', 'ecosystem', 'offers', 'multiple', 'window', 'managers', 'WMs', 'Some', 'are', 'developed', 'part', 'desktop', 'environment', 'Others', 'are', 'meant', 'used', 'standalone', 'application', 'This', 'the', 'case', 'tiling', 'WMs', 'which', 'offer', 'more', 'lightweight', 'customized', 'environment', 'This', 'article', 'presents', 'five', 'such', 'tiling', 'WMs', 'for', 'you', 'try', 'out', '8230']
-    # print(createVocabList(voc))
-
-    # testRSS()
     import feedparser
     ny = feedparser.parse('http://www.nasa.gov/rss/dyn/image_of_the_day.rss')
+    # print(len(ny['entries']))
     sf = feedparser.parse('https://fedoramagazine.org/feed/')
+    # print(len(sf['entries']))  # 101  医药
+    vocabList, p0V, p1V = localWords(ny, sf)
+    # print('vocabList:', vocabList)
+    print('p0V:', p0V)
+    print('p1V:', p1V)
+
     getTopWords(ny, sf)
